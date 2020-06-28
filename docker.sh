@@ -1,0 +1,1 @@
+docker run -it -p 8080:8080 --rm --entrypoint /bin/sh --mount type=bind,source=/home/seanny/projects/tipping-server,destination=/app node:lts-alpine

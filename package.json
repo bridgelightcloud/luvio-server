@@ -2,8 +2,10 @@
   "name": "tipping-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "run": "nodemon",
+    "seed": "node seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

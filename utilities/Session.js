@@ -1,21 +1,20 @@
 const bcrypt = require('bcrypt');
-const Error = require('./Error');
 const db = require('../models');
+const Error = require('./Error');
 
-const saltRounds = 10;
+const Session = {
+  async validate(sessionId) {
+    const session = db.Session.findById(sessionId);
+    Error.validateExists(session);
+  },
 
-class Session {
-  static async hashPassword(plaintext) {
-    return await bcrypt.hash(plaintext, saltRounds);
-  }
-
-  static async checkPassword(plaintext, hash) {
+  async checkPassword(plaintext, hash) {
     if (!(await bcrypt.compare(plaintext, hash))) {
-      Error.throwError(401);
+      Error.throwError(404);
     }
-  }
+  },
 
-  static async getCurrentAccount(req) {
+  async getCurrentAccount(req) {
     if (!req.session.currentAccount) {
       Error.throwError(401);
     }
@@ -26,7 +25,7 @@ class Session {
       Error.throwError(404);
     }
     return currentSessionAccount;
-  }
-}
+  },
+};
 
 module.exports = Session;

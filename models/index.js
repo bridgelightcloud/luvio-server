@@ -16,4 +16,5 @@ mongoose
 
 module.exports = {
   Account: require('./Account'),
+  Session: require('./Session'),
 };

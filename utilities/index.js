@@ -1,5 +1,6 @@
 module.exports = {
   Error: require('./Error'),
-  Profile: require('./Account'),
+  Account: require('./Account'),
   Session: require('./Session'),
+  Signal: require('./Signal'),
 };

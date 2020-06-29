@@ -40,19 +40,16 @@ const Err = {
       error.status = 500;
       this.writeLog(error);
     }
-    res.status(error.status).json({
-      status: error.status,
-      error,
-    });
+    res.status(error.status).json(error);
   },
   validateObjectId(string) {
     if (!mongoose.Types.ObjectId.isValid(string)) {
-      Error.throwError(400);
+      this.throwError(400);
     }
   },
   validateExists(item) {
     if (!item) {
-      Error.throwError(404);
+      this.throwError(404);
     }
   },
 };

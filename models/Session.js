@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const ObjectID = mongoose.Types.ObjectId;
 
 const SessionSchema = new Schema({
-  user: {
+  account: {
     type: ObjectID,
     ref: 'Account',
   },

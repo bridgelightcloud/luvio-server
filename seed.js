@@ -26,11 +26,14 @@ async function hashPassword(account) {
 
 async function seed() {
   try {
-    const deleted = await db.Account.deleteMany({});
+    let deleted = await db.Account.deleteMany({});
     console.log('Deleted', deleted.deletedCount, 'accounts.');
     const hashedAccounts = await Promise.all(accounts.map(hashPassword));
     const created = await db.Account.create(hashedAccounts);
     console.log('Created', created.length, 'accounts.');
+
+    deleted = await db.Session.deleteMany({});
+    console.log('Deleted', deleted.deletedCount, 'sessions.');
   } catch (err) {
     console.warn(err);
   } finally {

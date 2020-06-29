@@ -1,21 +1,27 @@
 /* eslint-disable no-console */
 const bcrypt = require('bcrypt');
 const db = require('../models');
+const util = require('../utilities');
 
 const rounds = parseInt(process.env.SALT_ROUNDS, 10);
 
 async function create(req, res) {
   try {
-    const hash = await bcrypt.hash(req.body.password, rounds);
-    const newAccount = await db.Account.create(
-      {
-        email: req.body.email,
-        password: hash,
-      },
-    );
+    if (!req.body.email || !req.body.password) {
+      util.Error.throwError(400);
+    }
+    const data = {
+      email: req.body.email.toLowerCase(),
+      password: await bcrypt.hash(req.body.password, rounds),
+    };
+    const duplicate = await db.Account.findOne({ email: data.email });
+    if (duplicate) {
+      util.Error.throwError(409);
+    }
+    const newAccount = await db.Account.create(data);
     res.json(newAccount);
   } catch (err) {
-    console.warn(err);
+    util.Error.handleErrors(err, res);
   }
 }
 
@@ -24,7 +30,7 @@ async function index(req, res) {
     const indexAccounts = await db.Account.find();
     res.json(indexAccounts);
   } catch (err) {
-    console.warn(err);
+    console.log(err);
   }
 }
 
@@ -33,7 +39,7 @@ async function show(req, res) {
     const showAccount = await db.Account.findById(req.params.id);
     res.json(showAccount);
   } catch (err) {
-    console.warn(err);
+    console.log(err);
   }
 }
 

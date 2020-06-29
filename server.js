@@ -20,7 +20,7 @@ app.use(
 app.use(bodyParser.json());
 
 // Morgan Logging
-app.use(morgan('dev'));
+app.use(morgan('tiny'));
 
 app.get('/', (req, res) => {
   res.send('Good');

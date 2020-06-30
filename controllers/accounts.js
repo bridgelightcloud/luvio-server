@@ -1,20 +1,16 @@
 /* eslint-disable no-console */
-const bcrypt = require('bcrypt');
 const db = require('../models');
 const util = require('../utilities');
 
-const rounds = parseInt(process.env.SALT_ROUNDS, 10);
-
 async function create(req, res) {
   try {
-    if (!req.body.email || !req.body.password) {
+    if (!req.body.email) {
       util.Error.throwError(400);
     }
     const data = {
       email: req.body.email.toLowerCase(),
-      password: await bcrypt.hash(req.body.password, rounds),
     };
-    const duplicate = await db.Account.findOne({ email: data.email });
+    const duplicate = await db.Account.findOne(data);
     if (duplicate) {
       util.Error.throwError(409);
     }

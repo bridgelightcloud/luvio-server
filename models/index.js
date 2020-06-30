@@ -17,4 +17,5 @@ mongoose
 module.exports = {
   Account: require('./Account'),
   Session: require('./Session'),
+  Token: require('./Token'),
 };

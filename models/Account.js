@@ -8,13 +8,10 @@ const AccountSchema = new Schema({
     required: true,
     unique: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
+  screenName: String,
   active: {
     type: Boolean,
-    default: true,
+    default: false,
   },
 });
 

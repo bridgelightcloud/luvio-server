@@ -34,6 +34,9 @@ async function seed() {
 
     deleted = await db.Session.deleteMany({});
     console.log('Deleted', deleted.deletedCount, 'sessions.');
+
+    deleted = await db.Token.deleteMany({});
+    console.log('Deleted', deleted.deletedCount, 'tokens.');
   } catch (err) {
     console.warn(err);
   } finally {

@@ -22,11 +22,14 @@ app.use(bodyParser.json());
 app.use(morgan('tiny'));
 
 app.get('/', (req, res) => {
-  res.send('Good');
+  res.json({
+    status: 'server up',
+  });
 });
 
 app.use('/api/v1/accounts', routes.accounts);
 app.use('/api/v1/sessions', routes.sessions);
+app.use('/home/magic-link', routes.tokens);
 
 const server = app.listen(PORT);
 

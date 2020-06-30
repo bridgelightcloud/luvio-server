@@ -3,4 +3,5 @@ module.exports = {
   Account: require('./Account'),
   Session: require('./Session'),
   Signal: require('./Signal'),
+  SES: require('./SES'),
 };

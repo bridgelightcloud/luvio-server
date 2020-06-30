@@ -3,14 +3,16 @@ const util = require('../utilities');
 
 async function login(req, res) {
   try {
-    const account = await db.Account.findOne({ email: req.body.email });
-    util.Error.validateExists(account);
-    await util.Session.checkPassword(req.body.password, account.password);
-    const session = await db.Session.create({ account });
-    res.json({
-      session: session.id,
-      account: util.Account.trimAccount(account),
-    });
+    const { email } = req.body;
+    const account = await db.Account.findOne({ email });
+    if (account) {
+      const token = await db.Token.create({ account: account.id });
+      const activation = await util.SES.sendActivationEmail(email, token.id);
+      console.log(activation);
+      res.sendStatus(201);
+      return;
+    }
+    util.Error.throwError(404);
   } catch (err) {
     util.Error.handleErrors(err, res);
   }

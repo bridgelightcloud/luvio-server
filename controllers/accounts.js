@@ -19,7 +19,7 @@ async function create(req, res) {
       util.Error.throwError(409);
     }
     const newAccount = await db.Account.create(data);
-    res.json(newAccount);
+    res.status(201).json(newAccount);
   } catch (err) {
     util.Error.handleErrors(err, res);
   }

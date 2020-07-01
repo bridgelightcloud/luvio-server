@@ -1,18 +1,21 @@
 const db = require('../models');
 const util = require('../utilities');
 
-async function login(req, res) {
+async function create(req, res) {
   try {
-    const { email } = req.body;
-    const account = await db.Account.findOne({ email });
-    if (account) {
-      const token = await db.Token.create({ account: account.id });
-      const activation = await util.SES.sendActivationEmail(email, token.id);
-      console.log(activation);
-      res.sendStatus(201);
-      return;
-    }
-    util.Error.throwError(404);
+    const { token } = req.body;
+    util.Error.validateObjectId(token);
+    const foundToken = await db.Token.findById(token);
+    util.Error.validateExists(foundToken);
+    util.Error.validateNotExpired(foundToken);
+    await db.Token.findByIdAndDelete(token);
+    const session = await db.Session.create({ account: foundToken.account });
+    const account = await db.Account.findById(session.account);
+    const data = {
+      id: session.id,
+      account: util.Account.trimAccount(account),
+    };
+    res.status(201).json(data);
   } catch (err) {
     util.Error.handleErrors(err, res);
   }
@@ -35,7 +38,7 @@ async function validate(req, res) {
   }
 }
 
-async function logout(req, res) {
+async function remove(req, res) {
   try {
     const sessionId = req.params.id;
     util.Error.validateObjectId(sessionId);
@@ -50,7 +53,7 @@ async function logout(req, res) {
 }
 
 module.exports = {
-  login,
+  create,
   validate,
-  logout,
+  remove,
 };

@@ -15,7 +15,7 @@ const SES = {
           },
           Body: {
             Html: {
-              Data: `Follow this link to <b>complete</b> sign-in. <a href="https://tipper.seannyphoenix.com/home/magic-link?token=${token}">${token}</a>`,
+              Data: `Follow this link to complete sign-in. <a href="https://tipper.seannyphoenix.com/home/magic-link?token=${token}">${token}</a>`,
             },
             Text: {
               Data: `Follow this link to complete sign-in. https://tipper.seannyphoenix.com/home/magic-link?token=${token}`,
@@ -23,7 +23,7 @@ const SES = {
           },
         },
       },
-      FromEmailAddress: 'test@seannyphoenix.com',
+      FromEmailAddress: 'magic-link@seannyphoenix.com',
       Destination: {
         ToAddresses: [emailAddress],
       },

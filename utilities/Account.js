@@ -1,9 +1,10 @@
 module.exports = {
   trimAccount(account) {
-    return {
+    const trim = {
       _id: account.id,
       email: account.email,
       active: account.active,
     };
+    return trim;
   },
 };

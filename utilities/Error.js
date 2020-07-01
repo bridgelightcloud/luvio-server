@@ -52,6 +52,11 @@ const Err = {
       this.throwError(404);
     }
   },
+  validateNotExpired(item) {
+    if (item.expiration < Date.now()) {
+      this.throwError(401);
+    }
+  },
 };
 
 module.exports = Err;

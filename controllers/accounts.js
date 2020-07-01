@@ -30,6 +30,18 @@ async function index(req, res) {
   }
 }
 
+async function lookup(req, res) {
+  try {
+    const { email } = req.params;
+    util.Error.validateExists(email);
+    const account = await db.Account.findOne({ email });
+    util.Error.validateExists(account);
+    res.sendStatus(200);
+  } catch (err) {
+    util.Error.handleErrors(err, res);
+  }
+}
+
 async function show(req, res) {
   try {
     const showAccount = await db.Account.findById(req.params.id);
@@ -68,6 +80,7 @@ async function deactivate(req, res) {
 module.exports = {
   create,
   index,
+  lookup,
   show,
   update,
   deactivate,

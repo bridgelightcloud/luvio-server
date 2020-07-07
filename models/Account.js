@@ -11,7 +11,11 @@ const AccountSchema = new Schema({
   screenName: String,
   active: {
     type: Boolean,
-    default: false,
+    default: true,
+  },
+  new: {
+    type: Boolean,
+    default: true,
   },
 });
 

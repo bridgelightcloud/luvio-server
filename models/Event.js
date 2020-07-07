@@ -4,11 +4,16 @@ const { Schema } = mongoose;
 const ObjectID = mongoose.Types.ObjectId;
 
 const EventSchema = new Schema({
+  // Event Name
+  name: {
+    type: String,
+    required: true,
+  },
+
   // Host Organization
   organization: {
     type: ObjectID,
     ref: 'Organization',
-    required: true,
   },
 
   // Host List
@@ -17,7 +22,6 @@ const EventSchema = new Schema({
     account: {
       type: ObjectID,
       ref: 'Account',
-      required: true,
     },
   }],
 
@@ -28,8 +32,13 @@ const EventSchema = new Schema({
     account: {
       type: ObjectID,
       ref: 'Account',
-      required: true,
     },
+  },
+
+  // Active
+  active: {
+    type: Boolean,
+    default: true,
   },
 });
 

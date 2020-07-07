@@ -2,6 +2,8 @@
 const db = require('../models');
 const util = require('../utilities');
 
+const returnNew = { new: true };
+
 async function create(req, res) {
   try {
     if (!req.body.email) {
@@ -56,7 +58,7 @@ async function update(req, res) {
     const updateAccount = await db.Account.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true },
+      returnNew,
     );
     res.json(updateAccount);
   } catch (err) {
@@ -69,7 +71,7 @@ async function deactivate(req, res) {
     const deactivateAccount = await db.Account.findByIdAndUpdate(
       req.params.id,
       { active: false },
-      { new: true },
+      returnNew,
     );
     res.json(deactivateAccount);
   } catch (err) {

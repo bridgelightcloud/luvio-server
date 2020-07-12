@@ -17,7 +17,6 @@ const OrganizationSchema = new Schema({
     account: {
       type: ObjectID,
       ref: 'Account',
-      required: true,
     },
     // Whether the Member is an Admin
     admin: {
@@ -31,7 +30,6 @@ const OrganizationSchema = new Schema({
     event: {
       type: ObjectID,
       ref: 'Event',
-      required: true,
     },
   }],
 

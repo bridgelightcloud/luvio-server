@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const db = require('../models');
 const Error = require('./Error');
 
@@ -8,23 +7,17 @@ const Session = {
     Error.validateExists(session);
   },
 
-  async checkPassword(plaintext, hash) {
-    if (!(await bcrypt.compare(plaintext, hash))) {
-      Error.throwError(404);
-    }
-  },
-
-  async getCurrentAccount(req) {
-    if (!req.session.currentAccount) {
-      Error.throwError(401);
-    }
-    const currentSessionAccount = await db.Account.findById(
-      req.session.currentAccount.id,
-    );
-    if (!currentSessionAccount) {
-      Error.throwError(404);
-    }
-    return currentSessionAccount;
+  async getSessionAccount(req) {
+    const auth = req.headers.authorization;
+    Error.validateExists(auth, 401);
+    const sessionId = auth.slice(auth.indexOf(' ') + 1);
+    Error.validateObjectId(sessionId);
+    const session = db.Session.findById(sessionId);
+    Error.validateExists(session);
+    Error.validateNotExpired(session);
+    const accountID = session.account;
+    const account = db.Account.findById(accountID);
+    return account;
   },
 };
 

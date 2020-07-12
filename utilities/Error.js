@@ -19,6 +19,7 @@ const Err = {
     second: 'numeric',
     hour12: false,
   },
+
   writeLog(message) {
     const logTime = Intl.DateTimeFormat('default', this.logTimeOptions)
       .format(Date.now());
@@ -30,11 +31,13 @@ const Err = {
       '\n\n-----\nError occurred. See server.log for details\n-----\n\n',
     );
   },
+
   throwError(status) {
     const newError = this.httpErrors[status];
     newError.status = status;
     throw newError;
   },
+
   handleErrors(error, res) {
     if (!error.status) {
       error.status = 500;
@@ -42,16 +45,19 @@ const Err = {
     }
     res.status(error.status).json(error);
   },
+
   validateObjectId(string) {
     if (!mongoose.Types.ObjectId.isValid(string)) {
       this.throwError(400);
     }
   },
-  validateExists(item) {
+
+  validateExists(item, status = 404) {
     if (!item) {
-      this.throwError(404);
+      this.throwError(status);
     }
   },
+
   validateNotExpired(item) {
     if (item.expiration < Date.now()) {
       this.throwError(401);

@@ -104,3 +104,4 @@ dist
 .tern-port
 
 ecsupdate.sh
+ec2-connect.sh

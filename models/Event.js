@@ -22,6 +22,7 @@ const EventSchema = new Schema({
     account: {
       type: ObjectID,
       ref: 'Account',
+      required: true,
     },
   }],
 

@@ -1,20 +1,29 @@
 version: "3.7"
 services:
 
-  tipper:
+  luvio:
     build: .
     ports:
       - "8080:80"
     environment: 
-      - MONGODB_URL=mongodb://mongo/tipper
+      - MONGODB_URL=mongodb://%2Ftmp%2Fluvio%2Fmongod.sock/luvio
     depends_on: 
       - mongo
+    volumes:
+      - type: bind
+        source: /tmp/luvio
+        target: /tmp/luvio
 
   mongo:
     image: mongo:3
-    hostname: mongo
+    command: ["mongod", "--bind_ip", "/tmp/luvio/mongod.sock"]
     volumes:
-      - mongo:/data/db
+      - type: volume
+        source: mongo
+        target: /data/db
+      - type: bind
+        source: /tmp/luvio
+        target: /tmp/luvio
 
 volumes:
   mongo:

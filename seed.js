@@ -41,7 +41,7 @@ async function seed() {
     // Accounts
     let deleted = await db.Account.deleteMany({});
     console.log('Deleted', deleted.deletedCount, 'accounts.');
-    const created = await db.Account.create(seedData.accounts);
+    let created = await db.Account.create(seedData.accounts);
     console.log('Created', created.length, 'accounts.');
 
     // Organizations
@@ -51,8 +51,10 @@ async function seed() {
     for (let x = 0; x < seedData.organizations.length; x++) {
       const thisOrg = seedData.organizations[x];
       console.log(thisOrg);
-      for (let y = 0; y < thisOrg.members.length; y++) {
-
+      if (thisOrg.members) {
+        for (let y = 0; y < thisOrg.members.length; y++) {
+          null;
+        }
       }
       organizations.push(
         seedData.organizations[x],
@@ -61,8 +63,8 @@ async function seed() {
 
     console.log(organizations);
 
-    // created = await db.Organization.create(organizations);
-    // console.log('Created', created.length, 'organizations.');
+    created = await db.Organization.create(organizations);
+    console.log('Created', created.length, 'organizations.');
 
     // Events
 

@@ -3,14 +3,25 @@ const util = require('../utilities');
 
 async function create(req, res) {
   try {
+    // Get the token
     const { token } = req.body;
     util.Error.validateObjectId(token);
+
+    // Load the token from the database, and make sure it's not missing or expired
     const foundToken = await db.Token.findById(token);
     util.Error.validateExists(foundToken);
     util.Error.validateNotExpired(foundToken);
+
+    // Delete the token, since it's being used
     await db.Token.findByIdAndDelete(token);
+
+    // Create a new session for the user
     const session = await db.Session.create({ account: foundToken.account });
+
+    // Get the account for this session
     const account = await db.Account.findById(session.account);
+
+    // Return the session ID and account info
     const data = {
       id: session.id,
       account: util.Account.trimAccount(account),

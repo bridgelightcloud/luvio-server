@@ -9,13 +9,10 @@ const AccountSchema = new Schema({
     unique: true,
   },
   screenName: String,
-  active: {
-    type: Boolean,
-    default: true,
-  },
-  new: {
-    type: Boolean,
-    default: true,
+  state: {
+    type: String,
+    enum: ['new', 'active', 'inactive'],
+    default: 'new',
   },
 });
 

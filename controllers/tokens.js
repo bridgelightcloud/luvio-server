@@ -4,34 +4,31 @@ const db = require('../models');
 const tokens = {
   async sendMagicLink(req, res) {
     try {
-      const { email } = req.body;
+      // Retrieve email address and clean it up
+      let { email } = req.body;
       util.Error.validateExists(email);
-      const account = await db.Account.findOne({ email });
+      email = email.toLowerCase().trim();
+
+      // Get the account for this email
+      let account = await db.Account.findOne({ email });
+      // If one does not exist, create one
       if (!account) {
-        res.sendStatus(200);
-        return;
+        account = await db.Account.create({ email });
       }
+
+      // Look for and delete any current token for this account
       let token = await db.Token.findOne({ account: account.id });
       if (token) {
         await db.Token.findByIdAndDelete(token.id);
       }
+
+      // Create a new token
       token = await db.Token.create({ account: account.id });
-      util.SES.sendActivationEmail(email, token.id);
-      res.sendStatus(200);
+      // Send the token to the email address
+      util.SES.sendActivationEmail(email, token);
+      res.status(200).json({ email });
     } catch (err) {
       util.Error.handleErrors(err, res);
-    }
-  },
-
-  async redirect(req, res) {
-    try {
-      const { token } = req.query;
-      if (!token) {
-        res.sendStatus(400);
-      }
-      res.redirect(`exp://10.0.0.188:19000/--/home/magic-link?token=${token}`);
-    } catch (error) {
-      res.sendStatus(500);
     }
   },
 };

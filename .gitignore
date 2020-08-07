@@ -103,5 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# Scripts
 ecsupdate.sh
 ec2-connect.sh
+
+# Etc
+beefree-pkeaciyv90j/

@@ -10,7 +10,7 @@ async function create(req, res) {
       util.Error.throwError(400);
     }
     const data = {
-      email: req.body.email.toLowerCase(),
+      email: req.body.email.toLowerCase().trim(),
     };
     const duplicate = await db.Account.findOne(data);
     if (duplicate) {
@@ -18,27 +18,6 @@ async function create(req, res) {
     }
     const newAccount = await db.Account.create(data);
     res.status(201).json(newAccount);
-  } catch (err) {
-    util.Error.handleErrors(err, res);
-  }
-}
-
-async function index(req, res) {
-  try {
-    const indexAccounts = await db.Account.find();
-    res.json(indexAccounts);
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-async function lookup(req, res) {
-  try {
-    const { email } = req.params;
-    util.Error.validateExists(email);
-    const account = await db.Account.findOne({ email });
-    util.Error.validateExists(account);
-    res.sendStatus(200);
   } catch (err) {
     util.Error.handleErrors(err, res);
   }
@@ -81,8 +60,6 @@ async function deactivate(req, res) {
 
 module.exports = {
   create,
-  index,
-  lookup,
   show,
   update,
   deactivate,

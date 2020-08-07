@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const fs = require('fs');
+const moment = require('moment');
 
 const Err = {
   httpErrors: {
@@ -48,18 +49,21 @@ const Err = {
 
   validateObjectId(string) {
     if (!mongoose.Types.ObjectId.isValid(string)) {
+      console.log('Invalid objectId format:', string);
       this.throwError(400);
     }
   },
 
   validateExists(item, status = 404) {
     if (!item) {
+      console.log('Item does not exist.');
       this.throwError(status);
     }
   },
 
   validateNotExpired(item) {
-    if (item.expiration < Date.now()) {
+    const expiration = moment.utc(item.expiration, 'x');
+    if (expiration.isBefore(moment.utc())) {
       this.throwError(401);
     }
   },

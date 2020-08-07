@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const { Schema } = mongoose;
 const ObjectID = mongoose.Types.ObjectId;
@@ -9,8 +10,8 @@ const TokenSchema = new Schema({
     ref: 'Account',
   },
   expiration: {
-    type: Date,
-    default: Date.now() + (1000 * 60 * 15),
+    type: String,
+    default: moment.utc().add(15, 'minutes'),
   },
 });
 

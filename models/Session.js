@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const { Schema } = mongoose;
 const ObjectID = mongoose.Types.ObjectId;
@@ -9,10 +10,15 @@ const SessionSchema = new Schema({
     ref: 'Account',
   },
   expiration: {
-    type: Date,
-    default: Date.now() + (1000 * 60 * 60),
+    type: String,
+    // 15 minutes
+    default: moment.utc().add(15, 'minutes'),
   },
 });
+
+SessionSchema.methods.refresh = () => {
+  this.expiration = moment.utc().add(15, 'minutes');
+};
 
 const Session = mongoose.model('Session', SessionSchema);
 

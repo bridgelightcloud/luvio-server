@@ -33,7 +33,6 @@ app.use('/v1/events', routes.events);
 app.use('/v1/organizations', routes.organizations);
 app.use('/v1/sessions', routes.sessions);
 app.use('/v1/tokens', routes.tokens);
-app.use('/home/magic-link', routes.tokens);
 
 const server = app.listen(PORT);
 

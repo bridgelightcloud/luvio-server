@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongooseFuzzySearching = require('mongoose-fuzzy-searching');
 
 const { Schema } = mongoose;
 
@@ -15,6 +16,8 @@ const AccountSchema = new Schema({
     default: 'new',
   },
 });
+
+AccountSchema.plugin(mongooseFuzzySearching, { fields: ['screenName'] });
 
 const Account = mongoose.model('Account', AccountSchema);
 

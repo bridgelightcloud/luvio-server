@@ -3,6 +3,7 @@ const ctrl = require('../controllers');
 
 const router = express.Router();
 
+router.get('/', ctrl.accounts.search);
 router.post('/', ctrl.accounts.create);
 router.get('/:id', ctrl.accounts.show);
 router.put('/:id', ctrl.accounts.update);

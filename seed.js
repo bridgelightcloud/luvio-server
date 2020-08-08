@@ -31,6 +31,7 @@ const seedData = {
   ],
   events: [
     {
+      name: 'Heart Court Presents',
       organization: 'Grand Ducal Council',
     },
   ],
@@ -50,7 +51,6 @@ async function seed() {
     const organizations = [];
     for (let x = 0; x < seedData.organizations.length; x++) {
       const thisOrg = seedData.organizations[x];
-      console.log(thisOrg);
       if (thisOrg.members) {
         for (let y = 0; y < thisOrg.members.length; y++) {
           null;
@@ -61,12 +61,19 @@ async function seed() {
       );
     }
 
-    console.log(organizations);
-
     created = await db.Organization.create(organizations);
     console.log('Created', created.length, 'organizations.');
 
     // Events
+    deleted = await db.Event.deleteMany({});
+    console.log('Deleted', deleted.deletedCount, 'events.');
+    for (let i = 0; i < seedData.events.length; i++) {
+      const element = seedData.events[i];
+      const org = db.Organization.find({ name: element.organization });
+      element.organization = org.id;
+    }
+    created = await db.Event.create(seedData.events);
+    console.log('Created', created.length, 'events.');
 
     // Sessions
     deleted = await db.Session.deleteMany({});

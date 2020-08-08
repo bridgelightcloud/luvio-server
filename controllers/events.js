@@ -19,10 +19,11 @@ async function create(req, res) {
   }
 }
 
-async function index(req, res) {
+async function search(req, res) {
   try {
-    const indexEvents = await db.Event.find();
-    res.json(indexEvents);
+    const query = req.query.query ? req.query : '';
+    const foundEvents = await db.Event.fuzzySearch(query);
+    res.json(foundEvents);
   } catch (err) {
     util.Error.handleErrors(err, res);
   }
@@ -62,7 +63,7 @@ async function cancel(req, res) {
 
 module.exports = {
   create,
-  index,
+  search,
   show,
   update,
   cancel,

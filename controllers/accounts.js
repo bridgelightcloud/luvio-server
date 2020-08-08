@@ -23,6 +23,16 @@ async function create(req, res) {
   }
 }
 
+async function search(req, res) {
+  try {
+    const query = req.query.query ? req.query : '';
+    const foundAccounts = await db.Account.fuzzySearch(query);
+    res.json(foundAccounts);
+  } catch (err) {
+    util.Error.handleErrors(err, res);
+  }
+}
+
 async function show(req, res) {
   try {
     const showAccount = await db.Account.findById(req.params.id);
@@ -60,6 +70,7 @@ async function deactivate(req, res) {
 
 module.exports = {
   create,
+  search,
   show,
   update,
   deactivate,

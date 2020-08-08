@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongooseFuzzySearching = require('mongoose-fuzzy-searching');
 
 const { Schema } = mongoose;
 const ObjectID = mongoose.Types.ObjectId;
@@ -42,6 +43,8 @@ const EventSchema = new Schema({
     default: true,
   },
 });
+
+EventSchema.plugin(mongooseFuzzySearching, { fields: ['name'] });
 
 const Event = mongoose.model('Event', EventSchema);
 

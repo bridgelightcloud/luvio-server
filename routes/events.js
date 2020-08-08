@@ -4,7 +4,7 @@ const ctrl = require('../controllers');
 const router = express.Router();
 
 router.post('/', ctrl.events.create);
-router.get('/', ctrl.events.index);
+router.get('/', ctrl.events.search);
 router.get('/:id', ctrl.events.show);
 router.put('/:id', ctrl.events.update);
 router.delete('/:id', ctrl.events.cancel);

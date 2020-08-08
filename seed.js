@@ -8,9 +8,15 @@ const seedData = {
   accounts: [
     {
       email: 'seannyphoenix@gmail.com',
+      screenName: 'Boy Phoenix',
     },
     {
       email: 'test@test.com',
+      screenName: 'Testing Person',
+    },
+    {
+      email: 'seannytrash@gmail.com',
+      screenName: 'sillyboy',
     },
   ],
   organizations: [

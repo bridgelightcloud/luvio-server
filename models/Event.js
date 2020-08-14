@@ -37,10 +37,17 @@ const EventSchema = new Schema({
     },
   },
 
-  // Active
-  active: {
-    type: Boolean,
-    default: true,
+  // State
+  state: {
+    type: String,
+    enum: ['new', 'active', 'inactive'],
+    default: 'new',
+  },
+
+  // Model Type
+  model: {
+    type: String,
+    default: 'EVENT',
   },
 });
 

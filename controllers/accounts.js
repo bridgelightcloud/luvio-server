@@ -25,8 +25,13 @@ async function create(req, res) {
 
 async function search(req, res) {
   try {
-    const query = req.query.query ? req.query : '';
-    const foundAccounts = await db.Account.fuzzySearch(query);
+    const query = req.query.query || '';
+    const options = req.query;
+    delete options.query;
+    // options.state = { $nin: ['new', 'inactive'] };
+    const foundAccounts = await db.Account
+      .fuzzySearch(query, options)
+      .select('email name picUrl model');
     res.json(foundAccounts);
   } catch (err) {
     util.Error.handleErrors(err, res);
@@ -35,7 +40,11 @@ async function search(req, res) {
 
 async function show(req, res) {
   try {
-    const showAccount = await db.Account.findById(req.params.id);
+    const accountId = req.params.id;
+    util.Error.validateObjectId(accountId);
+    const showAccount = await db.Account
+      .findById(accountId)
+      .select('email name picUrl model');
     res.json(showAccount);
   } catch (err) {
     console.log(err);

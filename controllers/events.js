@@ -21,8 +21,12 @@ async function create(req, res) {
 
 async function search(req, res) {
   try {
-    const query = req.query.query ? req.query : '';
-    const foundEvents = await db.Event.fuzzySearch(query);
+    const query = req.query.query || '';
+    const options = req.query;
+    delete options.query;
+    const foundEvents = await db.Event
+      .fuzzySearch(query, options)
+      .select('name organization hosts performers model');
     res.json(foundEvents);
   } catch (err) {
     util.Error.handleErrors(err, res);

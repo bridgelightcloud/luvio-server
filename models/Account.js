@@ -9,15 +9,22 @@ const AccountSchema = new Schema({
     required: true,
     unique: true,
   },
-  screenName: String,
+  name: String,
+  picUrl: String,
   state: {
     type: String,
     enum: ['new', 'active', 'inactive'],
     default: 'new',
   },
+
+  // Model Type
+  model: {
+    type: String,
+    default: 'ACCOUNT',
+  },
 });
 
-AccountSchema.plugin(mongooseFuzzySearching, { fields: ['screenName'] });
+AccountSchema.plugin(mongooseFuzzySearching, { fields: ['name'] });
 
 const Account = mongoose.model('Account', AccountSchema);
 

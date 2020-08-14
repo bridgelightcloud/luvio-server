@@ -5,7 +5,7 @@ AWS.config.update({ region: 'us-west-2' });
 const sesv2 = new AWS.SESV2({ apiVersion: '2019-09-27' });
 
 function createMagicLinkEmail(token) {
-  const magicLink = `https://app.getluv.io/account/magic-link?token=${token.id}`;
+  const magicLink = `https://app.getluv.io/account/auth/magic-link?token=${token.id}`;
   const html = `
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 

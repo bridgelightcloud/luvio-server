@@ -33,9 +33,12 @@ const Err = {
     );
   },
 
-  throwError(status) {
+  throwError(status, itemId) {
     const newError = this.httpErrors[status];
     newError.status = status;
+    if (itemId) {
+      newError.itemId = itemId;
+    }
     throw newError;
   },
 
@@ -64,7 +67,7 @@ const Err = {
   validateNotExpired(item) {
     const expiration = moment.utc(item.expiration, 'x');
     if (expiration.isBefore(moment.utc())) {
-      this.throwError(401);
+      this.throwError(401, item.id);
     }
   },
 };

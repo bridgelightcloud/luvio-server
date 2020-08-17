@@ -104,8 +104,7 @@ dist
 .tern-port
 
 # Scripts
-ecsupdate.sh
-ec2-connect.sh
+aws-util/
 
 # Etc
 beefree-pkeaciyv90j/

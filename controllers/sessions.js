@@ -28,6 +28,7 @@ async function create(req, res) {
     };
     res.status(201).json(data);
   } catch (err) {
+    await db.token.findByIdAndDelete(err.itemId);
     util.Error.handleErrors(err, res);
   }
 }
@@ -39,12 +40,11 @@ async function validate(req, res) {
     const session = await db.Session.findById(sessionId)
       .populate('account');
     util.Error.validateExists(session);
-    if (session.expiration < Date.now()) {
-      await db.Session.findByIdAndDelete(session.id);
-      util.Error.throwError(404);
-    }
+    util.Error.validateNotExpired(session);
+    await db.Session.findByIdAndDelete(session.id);
     res.json(util.Account.trimAccount(session.account));
   } catch (err) {
+    await db.Session.findByIdAndDelete(err.itemId);
     util.Error.handleErrors(err, res);
   }
 }

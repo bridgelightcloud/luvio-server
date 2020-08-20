@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const moment = require('moment');
+const utilities = require('../utilities');
 
 const { Schema } = mongoose;
 const ObjectID = mongoose.Types.ObjectId;
@@ -11,7 +11,7 @@ const TokenSchema = new Schema({
   },
   expiration: {
     type: Number,
-    default: moment().add(15, 'minutes').unix(),
+    default: utilities.Expiration.setExpiration,
   },
 });
 

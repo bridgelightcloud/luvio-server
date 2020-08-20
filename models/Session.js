@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const moment = require('moment');
+const utilities = require('../utilities');
 
 const { Schema } = mongoose;
 const ObjectID = mongoose.Types.ObjectId;
@@ -11,12 +11,12 @@ const SessionSchema = new Schema({
   },
   expiration: {
     type: Number,
-    default: moment().add(15, 'minutes').unix(),
+    default: utilities.Expiration.setExpiration,
   },
 });
 
-SessionSchema.methods.refresh = () => {
-  this.expiration = moment().add(15, 'minutes').unix();
+SessionSchema.methods.refresh = function refresh() {
+  this.expiration = utilities.Expiration.setExpiration();
 };
 
 const Session = mongoose.model('Session', SessionSchema);

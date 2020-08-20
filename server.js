@@ -19,7 +19,12 @@ app.use(
 app.use(bodyParser.json());
 
 // Morgan Logging
-app.use(morgan('tiny'));
+app.use(morgan('tiny', {
+  skip(req, res) {
+    const path = /^\/v\d+\/health$/;
+    return path.test(req.baseUrl);
+  },
+}));
 
 app.get('/', (req, res) => {
   res.json({
@@ -30,6 +35,7 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/v1/accounts', routes.accounts);
 app.use('/v1/events', routes.events);
+app.use('/v1/health', routes.health);
 app.use('/v1/organizations', routes.organizations);
 app.use('/v1/sessions', routes.sessions);
 app.use('/v1/tokens', routes.tokens);

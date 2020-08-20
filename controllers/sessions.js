@@ -19,12 +19,14 @@ async function create(req, res) {
     const session = await db.Session.create({ account: foundToken.account });
 
     // Get the account for this session
-    const account = await db.Account.findById(session.account);
+    const account = await db.Account
+      .findById(session.account)
+      .select('email name picUrl model');
 
     // Return the session ID and account info
     const data = {
       id: session.id,
-      account: util.Account.trimAccount(account),
+      account,
     };
     res.status(201).json(data);
   } catch (err) {
@@ -37,14 +39,18 @@ async function validate(req, res) {
   try {
     const sessionId = req.params.id;
     util.Error.validateObjectId(sessionId);
-    const session = await db.Session.findById(sessionId)
-      .populate('account');
+    const session = await db.Session
+      .findById(sessionId)
+      .populate({
+        path: 'account',
+        select: 'email name picUrl model',
+      });
     util.Error.validateExists(session);
     util.Error.validateNotExpired(session);
-    await db.Session.findByIdAndDelete(session.id);
-    res.json(util.Account.trimAccount(session.account));
+    session.refresh();
+    await session.save();
+    res.json(session);
   } catch (err) {
-    await db.Session.findByIdAndDelete(err.itemId);
     util.Error.handleErrors(err, res);
   }
 }
@@ -53,8 +59,7 @@ async function remove(req, res) {
   try {
     const sessionId = req.params.id;
     util.Error.validateObjectId(sessionId);
-    const session = await db.Session.findById(sessionId)
-      .populate('account');
+    const session = await db.Session.findById(sessionId);
     util.Error.validateExists(session);
     await db.Session.findByIdAndDelete(session.id);
     res.sendStatus(200);

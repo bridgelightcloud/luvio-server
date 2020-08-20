@@ -65,8 +65,9 @@ const Err = {
   },
 
   validateNotExpired(item) {
-    const expiration = moment.utc(item.expiration, 'x');
-    if (expiration.isBefore(moment.utc())) {
+    const expiration = moment.unix(item.expiration);
+    if (moment().isAfter(expiration)) {
+      console.log('Token or session is expired:', item);
       this.throwError(401, item.id);
     }
   },

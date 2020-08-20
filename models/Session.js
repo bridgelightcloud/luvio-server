@@ -10,14 +10,13 @@ const SessionSchema = new Schema({
     ref: 'Account',
   },
   expiration: {
-    type: String,
-    // 15 minutes
-    default: moment.utc().add(15, 'minutes'),
+    type: Number,
+    default: moment().add(15, 'minutes').unix(),
   },
 });
 
 SessionSchema.methods.refresh = () => {
-  this.expiration = moment.utc().add(15, 'minutes');
+  this.expiration = moment().add(15, 'minutes').unix();
 };
 
 const Session = mongoose.model('Session', SessionSchema);

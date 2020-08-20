@@ -28,7 +28,7 @@ async function create(req, res) {
     };
     res.status(201).json(data);
   } catch (err) {
-    await db.token.findByIdAndDelete(err.itemId);
+    await db.Token.findByIdAndDelete(err.itemId);
     util.Error.handleErrors(err, res);
   }
 }

@@ -10,8 +10,8 @@ const TokenSchema = new Schema({
     ref: 'Account',
   },
   expiration: {
-    type: String,
-    default: moment.utc().add(15, 'minutes'),
+    type: Number,
+    default: moment().add(15, 'minutes').unix(),
   },
 });
 

@@ -46,7 +46,7 @@ async function update(req, res) {
   try {
     const { id } = req.params;
     const data = req.body;
-    util.Error.validateObjectId(id);
+    util.Error.validateUUID(id);
     const updateEvent = await db.Event.findByIdAndUpdate(id, data, returnNew);
     res.json(updateEvent);
   } catch (err) {
@@ -57,7 +57,7 @@ async function update(req, res) {
 async function cancel(req, res) {
   try {
     const { id } = req.params;
-    util.Error.validateObjectId(id);
+    util.Error.validateUUID(id);
     const deactivateEvent = await db.Event.findByIdAndUpdate(id, deactivate, returnNew);
     res.json(deactivateEvent);
   } catch (err) {

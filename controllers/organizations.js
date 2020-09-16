@@ -40,7 +40,7 @@ async function index(req, res) {
 async function show(req, res) {
   try {
     const { id } = req.params;
-    util.Error.validateObjectId(id);
+    util.Error.validateUUID(id);
     const organization = await db.Organization.findById(id);
     util.Error.validateExists(organization);
     res.json(organization);
@@ -53,7 +53,7 @@ async function update(req, res) {
   try {
     const account = await util.Session.getSessionAccount(req);
     const { id } = req.params;
-    util.Error.validateObjectId(id);
+    util.Error.validateUUID(id);
     const data = req.body;
     const updatedOrganization = await db.Organization.findByIdAndUpdate(id, data, returnNew);
     res.json(updatedOrganization);
@@ -68,7 +68,7 @@ async function deactivate(req, res) {
     const account = await util.Session.getSessionAccount(req);
     // Get and validate ID
     const { id } = req.params;
-    util.Error.validateObjectId(id);
+    util.Error.validateUUID(id);
     // Find organization
     const deactivatedOrganization = await db.Organization.findById(id);
     util.Error.validateExists(deactivatedOrganization);

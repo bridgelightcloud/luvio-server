@@ -2,6 +2,7 @@ const moment = require('moment');
 const db = require('../models');
 
 module.exports = {
+  standardFields: '',
   trimAccount(account) {
     const trim = {
       _id: account.id,

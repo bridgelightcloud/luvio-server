@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 const { Schema } = mongoose;
-const ObjectID = mongoose.Types.ObjectId;
 
 const OrganizationSchema = new Schema({
+  // Use UUIDv4 for document id
+  _id: {
+    type: String,
+    default: uuidv4,
+  },
+
   // Organization Name
   name: {
     type: String,
@@ -13,9 +19,9 @@ const OrganizationSchema = new Schema({
 
   // Member List
   members: [{
-    // Member Account
+    // Member Account - UUID
     account: {
-      type: ObjectID,
+      type: String,
       ref: 'Account',
     },
     // Whether the Member is an Admin
@@ -28,7 +34,7 @@ const OrganizationSchema = new Schema({
   // Event List
   events: [{
     event: {
-      type: ObjectID,
+      type: String,
       ref: 'Event',
     },
   }],

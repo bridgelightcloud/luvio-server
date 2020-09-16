@@ -5,7 +5,7 @@ async function create(req, res) {
   try {
     // Get the token
     const { token } = req.body;
-    util.Error.validateObjectId(token);
+    util.Error.validateUUID(token);
 
     // Load the token from the database, and make sure it's not missing or expired
     const foundToken = await db.Token.findById(token);
@@ -35,14 +35,28 @@ async function create(req, res) {
 
 async function validate(req, res) {
   try {
+    // Get the session id
     const sessionId = req.params.id;
-    util.Error.validateObjectId(sessionId);
+    util.Error.validateUUID(sessionId);
+
+    // Try to find the session in the database
     const session = await db.Session.findById(sessionId)
       .populate('account');
+
+    // Check if it exists, and if it's not expired
     util.Error.validateExists(session);
     util.Error.validateNotExpired(session);
-    await db.Session.findByIdAndDelete(session.id);
-    res.json(util.Account.trimAccount(session.account));
+
+    // Refresh with a new expiration
+    session.refresh();
+    await session.save();
+
+    // Return the session ID and account info
+    const data = {
+      id: session.id,
+      account: util.Account.trimAccount(session.account),
+    };
+    res.status(200).json(data);
   } catch (err) {
     await db.Session.findByIdAndDelete(err.itemId);
     util.Error.handleErrors(err, res);
@@ -52,7 +66,7 @@ async function validate(req, res) {
 async function remove(req, res) {
   try {
     const sessionId = req.params.id;
-    util.Error.validateObjectId(sessionId);
+    util.Error.validateUUID(sessionId);
     const session = await db.Session.findById(sessionId)
       .populate('account');
     util.Error.validateExists(session);

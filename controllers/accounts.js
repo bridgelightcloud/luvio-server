@@ -41,7 +41,7 @@ async function search(req, res) {
 async function show(req, res) {
   try {
     const accountId = req.params.id;
-    util.Error.validateObjectId(accountId);
+    util.Error.validateUUID(accountId);
     const showAccount = await db.Account
       .findById(accountId)
       .select('email name picUrl model');

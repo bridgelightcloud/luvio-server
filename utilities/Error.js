@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
 const fs = require('fs');
 const moment = require('moment');
+const { validate: uuidValidate } = require('uuid');
 
 const Err = {
   httpErrors: {
@@ -50,9 +50,9 @@ const Err = {
     res.status(error.status).json(error);
   },
 
-  validateObjectId(string) {
-    if (!mongoose.Types.ObjectId.isValid(string)) {
-      console.log('Invalid objectId format:', string);
+  validateUUID(string) {
+    if (!uuidValidate(string)) {
+      console.log('Invalid UUID:', string);
       this.throwError(400);
     }
   },

@@ -1,27 +1,33 @@
 const mongoose = require('mongoose');
 const mongooseFuzzySearching = require('mongoose-fuzzy-searching');
+const { v4: uuidv4 } = require('uuid');
 
 const { Schema } = mongoose;
-const ObjectID = mongoose.Types.ObjectId;
 
 const EventSchema = new Schema({
+  // Use UUIDv4 for document id
+  _id: {
+    type: String,
+    default: uuidv4,
+  },
+
   // Event Name
   name: {
     type: String,
     required: true,
   },
 
-  // Host Organization
+  // Host Organization - UUID
   organization: {
-    type: ObjectID,
+    type: String,
     ref: 'Organization',
   },
 
   // Host List
   hosts: [{
-    // Host Account
+    // Host Account - UUID
     account: {
-      type: ObjectID,
+      type: String,
       ref: 'Account',
       required: true,
     },
@@ -30,9 +36,9 @@ const EventSchema = new Schema({
   // Performer List
   performers:
   {
-    // Performer Account
+    // Performer Account - UUID
     account: {
-      type: ObjectID,
+      type: String,
       ref: 'Account',
     },
   },
@@ -47,6 +53,7 @@ const EventSchema = new Schema({
   // Model Type
   model: {
     type: String,
+    enum: ['EVENT'],
     default: 'EVENT',
   },
 });

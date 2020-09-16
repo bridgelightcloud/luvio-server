@@ -19,12 +19,14 @@ async function create(req, res) {
     const session = await db.Session.create({ account: foundToken.account });
 
     // Get the account for this session
-    const account = await db.Account.findById(session.account);
+    const account = await db.Account
+      .findById(session.account)
+      .select('email name picUrl model');
 
     // Return the session ID and account info
     const data = {
       id: session.id,
-      account: util.Account.trimAccount(account),
+      account,
     };
     res.status(201).json(data);
   } catch (err) {
@@ -58,7 +60,6 @@ async function validate(req, res) {
     };
     res.status(200).json(data);
   } catch (err) {
-    await db.Session.findByIdAndDelete(err.itemId);
     util.Error.handleErrors(err, res);
   }
 }

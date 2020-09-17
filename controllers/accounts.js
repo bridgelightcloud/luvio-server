@@ -47,7 +47,7 @@ async function show(req, res) {
       .select('email name picUrl model');
     res.json(showAccount);
   } catch (err) {
-    console.log(err);
+    util.Error.handleErrors(err, res);
   }
 }
 
@@ -60,7 +60,7 @@ async function update(req, res) {
     );
     res.json(updateAccount);
   } catch (err) {
-    console.warn(err);
+    util.Error.handleErrors(err, res);
   }
 }
 
@@ -73,7 +73,7 @@ async function deactivate(req, res) {
     );
     res.json(deactivateAccount);
   } catch (err) {
-    console.warn(err);
+    util.Error.handleErrors(err, res);
   }
 }
 

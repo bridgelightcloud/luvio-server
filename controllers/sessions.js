@@ -13,7 +13,7 @@ async function create(req, res) {
     util.Error.validateNotExpired(foundToken);
 
     // Delete the token, since it's being used
-    await db.Token.findByIdAndDelete(token);
+    db.Token.findByIdAndDelete(token);
 
     // Create a new session for the user
     const session = await db.Session.create({ account: foundToken.account });
